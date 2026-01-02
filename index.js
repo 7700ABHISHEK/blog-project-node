@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
-import mongoose from "mongoose";
+import mongoose, { connect } from "mongoose";
 import path from "path";
 import { fileURLToPath } from "url";
 import fs from "fs";
@@ -81,10 +81,12 @@ app.use((req, res) => {
   res.status(404).render("404");
 });
 
-// Start Server
-const server = app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
-});
+// Start Server only in development (not on Vercel)
+if (process.env.NODE_ENV !== "production") {
+  const server = app.listen(PORT, () => {
+    console.log(`🚀 Server running on http://localhost:${PORT}`);
+  });
+}
 
 // Export for Vercel
 export default app;
